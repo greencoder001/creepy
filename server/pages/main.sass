@@ -1,0 +1,114 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&family=Roboto&display=swap')
+
+$main: #1df588
+$second: #1f3446
+$third: #fff
+$fourth: #b5b5b5
+$fifth: #1b4262
+
+$good: #13e467
+$ok: #d7fa73
+$bad: #f47766
+
+$navsize: 15vw
+
+*
+  padding: 0
+  margin: 0
+
+body
+  background: $second
+  font-family: 'Open Sans', sans-serif
+  color: $fourth
+
+  h1
+    color: $main
+    font-family: 'Roboto'
+  h3
+    color: $third
+    font-family: 'Roboto'
+
+  nav
+    width: $navsize
+    height: 100vh
+    background: $fifth
+    position: fixed
+    top: 0
+    left: 0
+
+    .icon-aside
+      width: 100%
+
+    ul
+      width: 100%
+      li
+        list-style: none
+        width: 100 - 3% * 2
+        padding: 3%
+        color: $third
+
+        &:hover, &.active
+          background: $main
+          cursor: pointer
+
+  main
+    width: 100 - $navsize - 6vw
+    height: 100vh - 6vh
+    background: $second
+    position: absolute
+    top: 0
+    right: 0
+    padding-left: 3vw
+    padding-right: 3vw
+    padding-top: 3vh
+    padding-bottom: 3vh
+
+input
+  outline: none
+  text-align: center
+  border: 1px solid $main
+  border-radius: 50vw
+  background: rgba(0, 0, 0, 0)
+  color: $third
+  font-size: 100%
+  padding: 1.3%
+
+button, .btn
+  text-align: center
+  outline: none
+  border: 1px solid $main
+  border-radius: 50vw
+  background: rgba(0, 0, 0, 0)
+  color: $third
+  font-size: 100%
+  padding: 1.3%
+
+  &:hover
+    background: $main
+    cursor: pointer
+    color: $fifth
+
+.login
+  position: absolute
+  top: 50%
+  span
+    display: flex
+    justify-content: center
+  left: 50%
+  transform: translate(-50%, -50%)
+  width: 50vw
+  height: 50vh
+
+.cpu-usage, .ram-usage
+  width: 20vw
+  height: 2vh
+  background: $fifth
+  div
+    height: 100%
+
+.flex-justify
+  display: flex
+  justify-content: flex-start
+  align-items: flex-start
+  div
+    padding-right: 2%

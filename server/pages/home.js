@@ -1,27 +1,56 @@
 function parseCkis (ckis) {
-  let p = {}
-  ck = ckis.split(';')
-  for (c of ck) {
-    p[c.split('=')[0]] = c.split[c.split('=')[1]]
+  const p = {}
+  const ck = ckis.split(';')
+  for (const c of ck) {
+    p[c.split('=')[0]] = c.split('=')[1]
   }
 
   return p
 }
 
+const navbar = require('./navbar.js')
+
 module.exports = (isHttps, req, url, conf) => {
   // Login Check
-  if (req.headers['cookie'] === undefined || parseCkis(req.headers.cookie).login === conf.pwd) {
+  if (req.headers.cookie === undefined) {
     // Login
     return require('./login.js')(isHttps, req, url, conf)
   } else {
+    if ((parseCkis(req.headers.cookie).login || '') !== conf.pwd) {
+      // Login
+      return require('./login.js')(isHttps, req, url, conf)
+    }
     return `
       <!DOCTYPE html>
       <html>
         <head>
           <title>Dashboard - Creepy</title>
+          <link rel="stylesheet" href="main.min.css" />
+          <link rel="icon" href="/icon.svg" />
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/async.js@latest/dist/bundle.js"></script>
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/zGET@latest/dist/bundle.js"></script>
+          <script src="https://kit.fontawesome.com/8a7d9bf784.js" crossorigin="anonymous"></script>
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/queryjs@latest/dist/query.js"></script>
+          <script src="/main.js"></script>
         </head>
         <body>
-          <noscript>Please activate JavaScript</noscript>
+          <nav>
+            <img src="/icon-inverted.svg" alt="Creepy" class="icon-aside" />
+            <ul>
+              ${(() => {
+                let res = ''
+
+                for (const item of navbar) {
+                  res += `<li data-page="${item.page}" onclick="requestPage('${item.page}', '${item.name}')">${item.icon} ${item.name}</li>`
+                }
+
+                return res
+              })()}
+            </ul>
+          </nav>
+          <main>
+
+          </main>
         </body>
       </html>
     `
