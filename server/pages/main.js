@@ -73,7 +73,7 @@ const pages = {
         zGET({ url: '/osdata.json' }).then((value) => {
           const info = JSON.parse(value)
           sysinfo.innerHTML = `
-            <h3>${info.host}</h3>
+            <h3>${info.host} (${info.ip})</h3>
             <div class="flex-justify">
               <div>
                 <span>${(() => {
