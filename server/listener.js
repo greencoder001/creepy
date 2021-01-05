@@ -31,6 +31,11 @@ module.exports = (isHttps) => {
       require('./pages/os-data.js')(req, require('./conf/config.js'), (val) => {
         res.end(val)
       })
+    } else if (rl.startsWith('/exec/')) {
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      require('./pages/exec.js')(req, require('./conf/config.js'), (val) => {
+        res.end(val)
+      }, rl)
     }
   }
 }

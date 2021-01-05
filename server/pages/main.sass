@@ -63,7 +63,7 @@ body
     padding-top: 3vh
     padding-bottom: 3vh
 
-input
+input.inp
   outline: none
   text-align: center
   border: 1px solid $main
@@ -112,3 +112,26 @@ button, .btn
   align-items: flex-start
   div
     padding-right: 2%
+
+.shell
+  pre.shell-out
+    position: fixed
+    padding-left: 3vw
+    padding-right: 3vw
+    padding-top: 3vh
+    padding-bottom: 3vh
+    top: 0
+    right: 0
+    width: 100vw - $navsize -6vw
+    height: 95vh - 3vh
+    z-index: 5
+    overflow: auto
+  input
+    position: fixed
+    bottom: 0
+    right: 0
+    width: 100vw - $navsize
+    height: 5vh
+    border: 0
+    outline: 0
+    z-index: 6

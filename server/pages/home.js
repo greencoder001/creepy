@@ -25,6 +25,7 @@ module.exports = (isHttps, req, url, conf) => {
       <html>
         <head>
           <title>Dashboard - Creepy</title>
+          <meta charset="utf-8" />
           <link rel="stylesheet" href="main.min.css" />
           <link rel="icon" href="/icon.svg" />
           <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/async.js@latest/dist/bundle.js"></script>

@@ -108,6 +108,36 @@ const pages = {
 
       <div class="sysinfo" id="sysinfo"></div>
     `
+  },
+  shell: () => {
+    window.executeCmd = (cmd) => {
+      if (cmd === 'clear' || cmd === 'cls') {
+        $$('#shell-out').innerText = ''
+        return { then: () => {} }
+      }
+      return zGET({ url: '/exec/' + encodeURIComponent(cmd) })
+    }
+
+    window.cmd = () => {
+      if (window.event.charCode === 13) {
+        window.executeCmd($$('input').value).then((val) => {
+          $$('#shell-out').innerText += val + '\n'
+          $$('#shell-out').scrollTop += 99999999999999999999
+        })
+        $$('input').value = ''
+      }
+    }
+
+    zGET({ url: '/osdata.json' }).then((value) => {
+      $$('.shell input').placeholder = `${JSON.parse(value).user.name}@${JSON.parse(value).host}>`
+    })
+
+    return `
+      <div class="shell">
+        <pre class="shell-out" id="shell-out"></pre>
+        <input placeholder="user@creepy>" onkeypress="cmd()" type="text" />
+      </div>
+    `
   }
 }
 
