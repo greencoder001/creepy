@@ -120,15 +120,19 @@ const pages = {
 
     window.cmd = () => {
       if (window.event.charCode === 13) {
+        window.cmds.push($$('.shell input').value)
+        $$('#shell-out').innerText += (window.termUser || 'user@creepy') + '> ' + $$('.shell input').value + '\n'
+
         window.executeCmd($$('input').value).then((val) => {
           $$('#shell-out').innerText += val + '\n'
           $$('#shell-out').scrollTop += 99999999999999999999
         })
-        $$('input').value = ''
+        $$('.shell input').value = ''
       }
     }
 
     zGET({ url: '/osdata.json' }).then((value) => {
+      window.termUser = `${JSON.parse(value).user.name}@${JSON.parse(value).host}`
       $$('.shell input').placeholder = `${JSON.parse(value).user.name}@${JSON.parse(value).host}>`
     })
 
