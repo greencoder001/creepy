@@ -260,9 +260,18 @@ const pages = {
           zGET({ url: `/setfile/${encodeURIComponent(task)}/${encodeURIComponent(fname)}/${encodeURIComponent(val)}` })
         }
 
-        editor.getSession().on('change', function () {
-          window.setFile(taskinfo.id, currentFile, editor.getValue())
-        })
+        // editor.getSession().on('change', function () {
+        //   window.setFile(taskinfo.id, currentFile, editor.getValue())
+        // })
+
+        session.lastChange = editor.getValue()
+
+        setInterval(() => {
+          if (session.lastChange !== editor.getValue()) {
+            session.lastChange = editor.getValue()
+            window.setFile(taskinfo.id, currentFile, editor.getValue())
+          }
+        }, 1000)
 
         editor.focus()
 
