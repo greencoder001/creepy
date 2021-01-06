@@ -46,6 +46,16 @@ module.exports = (isHttps) => {
       require('./pages/tasksinfo.js')(req, require('./conf/config.js'), (val) => {
         res.end(val)
       }, rl)
+    } else if (rl.startsWith('/getfile/')) {
+      res.writeHead(200, { 'Content-Type': 'text/plain' })
+      require('./pages/getFile.js')(req, require('./conf/config.js'), (val) => {
+        res.end(val)
+      }, rl.substr(9))
+    } else if (rl.startsWith('/setfile/')) {
+      res.writeHead(200, { 'Content-Type': 'text/plain' })
+      require('./pages/setFile.js')(req, require('./conf/config.js'), (val) => {
+        res.end(val)
+      }, rl.substr(9))
     }
   }
 }

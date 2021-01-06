@@ -1,4 +1,4 @@
-/* global $$, zGET, session */
+/* global $$, zGET, session, ace */
 
 var cp = 'dash'
 
@@ -175,8 +175,114 @@ const pages = {
     if (typeof session.choosedTask !== 'string') {
       return requestPage('tasks', 'Tasks') || pages.tasks()
     } else {
+      zGET({ url: '/tasks/' + session.choosedTask + '.json' }).then((taskinfo) => {
+        taskinfo = JSON.parse(taskinfo)
+
+        if (session.tasks === undefined) session.tasks = {}
+        if (session.tasks[session.choosedTask] === undefined) session.tasks[session.choosedTask] = { currentFile: null }
+
+        const currentFile = session.tasks[session.choosedTask].currentFile
+
+        window.openFile = (task, fname) => {
+          $$('.files ul').innerHTML = ''
+          for (const filename of session.files) {
+            $$('.files ul').innerHTML += `
+              <li onclick="session.tasks[session.choosedTask].currentFile='${filename}';openFile(session.choosedTask,'${filename}')" class="${fname === filename ? 'active' : ''}">${(() => {
+                if (filename.endsWith('.py') || filename.endsWith('.pyw')) {
+                  return '<i class="fab fa-python"></i>'
+                } else if (filename.endsWith('.js')) {
+                  return '<i class="fab fa-js"></i>'
+                } else if (filename.endsWith('.cmd') || filename.endsWith('.bat') || filename.endsWith('.sh')) {
+                  return '<i class="fas fa-terminal"></i>'
+                } else if (filename.endsWith('.txt')) {
+                  return '<i class="far fa-file-alt"></i>'
+                } else if (filename.endsWith('.zip') || filename.endsWith('.tar.gz') || filename.endsWith('.tar.bz') || filename.endsWith('.rar')) {
+                  return '<i class="far fa-file-archive"></i>'
+                } else if (filename.endsWith('.csv')) {
+                  return '<i class="fas fa-file-csv"></i>'
+                } else if (filename.endsWith('.ico') || filename.endsWith('.png') || filename.endsWith('.svg') || filename.endsWith('.jpg') || filename.endsWith('.jpeg')) {
+                  return '<i class="far fa-file-image"></i>'
+                } else if (filename.endsWith('.css')) {
+                  return '<i class="fab fa-css3"></i>'
+                } else if (filename.endsWith('.sass') || filename.endsWith('.scss')) {
+                  return '<i class="fab fa-sass"></i>'
+                } else {
+                  return '<i class="far fa-file"></i>'
+                }
+              })()} ${filename}</li>
+            `
+          }
+          zGET({ url: '/getfile/' + encodeURIComponent(task) + '/' + encodeURIComponent(fname) }).then((value) => {
+            editor.setValue(value)
+          })
+          console.log('Loading file: ' + fname)
+        }
+
+        for (const filename of taskinfo.files) {
+          session.files = taskinfo.files
+          $$('.files ul').innerHTML = ''
+          $$('.files ul').innerHTML += `
+            <li onclick="session.tasks[session.choosedTask].currentFile='${filename}';openFile(session.choosedTask,'${filename}')" class="${currentFile === filename ? 'active' : ''}">${(() => {
+              if (filename.endsWith('.py') || filename.endsWith('.pyw')) {
+                return '<i class="fab fa-python"></i>'
+              } else if (filename.endsWith('.js')) {
+                return '<i class="fab fa-js"></i>'
+              } else if (filename.endsWith('.cmd') || filename.endsWith('.bat') || filename.endsWith('.sh')) {
+                return '<i class="fas fa-terminal"></i>'
+              } else if (filename.endsWith('.txt')) {
+                return '<i class="far fa-file-alt"></i>'
+              } else if (filename.endsWith('.zip') || filename.endsWith('.tar.gz') || filename.endsWith('.tar.bz') || filename.endsWith('.rar')) {
+                return '<i class="far fa-file-archive"></i>'
+              } else if (filename.endsWith('.csv')) {
+                return '<i class="fas fa-file-csv"></i>'
+              } else if (filename.endsWith('.ico') || filename.endsWith('.png') || filename.endsWith('.svg') || filename.endsWith('.jpg') || filename.endsWith('.jpeg')) {
+                return '<i class="far fa-file-image"></i>'
+              } else if (filename.endsWith('.css')) {
+                return '<i class="fab fa-css3"></i>'
+              } else if (filename.endsWith('.sass') || filename.endsWith('.scss')) {
+                return '<i class="fab fa-sass"></i>'
+              } else {
+                return '<i class="far fa-file"></i>'
+              }
+            })()} ${filename}</li>
+          `
+        }
+
+        window.openFile(taskinfo.id, currentFile)
+
+        const editor = ace.edit('editor')
+        editor.setTheme('ace/theme/monokai')
+        if (taskinfo.language === 'javascript') editor.getSession().setMode('ace/mode/javascript')
+        if (taskinfo.language === 'python') editor.getSession().setMode('ace/mode/python')
+        editor.setValue('')
+
+        window.setFile = (task, fname, val) => {
+          zGET({ url: `/setfile/${encodeURIComponent(task)}/${encodeURIComponent(fname)}/${encodeURIComponent(val)}` })
+        }
+
+        editor.getSession().on('change', function () {
+          window.setFile(taskinfo.id, currentFile, editor.getValue())
+        })
+
+        editor.focus()
+
+        editor.setOptions({
+          fontSize: '12pt',
+          showLineNumbers: false,
+          showGutter: false,
+          vScrollBarAlwaysVisible: true,
+          enableBasicAutocompletion: true,
+          enableLiveAutocompletion: true
+        })
+
+        editor.setShowPrintMargin(false)
+        editor.setBehavioursEnabled(false)
+      }, 200)
       return `
-        ${session.choosedTask}
+        <div class="files">
+          <ul></ul>
+        </div>
+        <div class="code" id="editor"></div>
       `
     }
   }

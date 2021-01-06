@@ -28,6 +28,7 @@ module.exports = (isHttps, req, url, conf) => {
           <meta charset="utf-8" />
           <link rel="stylesheet" href="main.min.css" />
           <link rel="icon" href="/icon.svg" />
+          <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.4.12/ace.js"></script>
           <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/sessionjs@latest/main.js"></script>
           <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/async.js@latest/dist/bundle.js"></script>
           <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/zGET@latest/dist/bundle.js"></script>
