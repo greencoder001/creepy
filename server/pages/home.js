@@ -2,7 +2,7 @@ function parseCkis (ckis) {
   const p = {}
   const ck = ckis.split(';')
   for (const c of ck) {
-    p[c.split('=')[0]] = c.split('=')[1]
+    p[decodeURIComponent(c.split('=')[0])] = decodeURIComponent(c.split('=')[1])
   }
 
   return p
@@ -28,6 +28,7 @@ module.exports = (isHttps, req, url, conf) => {
           <meta charset="utf-8" />
           <link rel="stylesheet" href="main.min.css" />
           <link rel="icon" href="/icon.svg" />
+          <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/sessionjs@latest/main.js"></script>
           <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/async.js@latest/dist/bundle.js"></script>
           <script type="text/javascript" src="https://cdn.jsdelivr.net/gh/greencoder001/zGET@latest/dist/bundle.js"></script>
           <script src="https://kit.fontawesome.com/8a7d9bf784.js" crossorigin="anonymous"></script>

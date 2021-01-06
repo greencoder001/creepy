@@ -1,4 +1,4 @@
-/* global $$, zGET */
+/* global $$, zGET, session */
 
 var cp = 'dash'
 
@@ -120,7 +120,6 @@ const pages = {
 
     window.cmd = () => {
       if (window.event.charCode === 13) {
-        window.cmds.push($$('.shell input').value)
         $$('#shell-out').innerText += (window.termUser || 'user@creepy') + '> ' + $$('.shell input').value + '\n'
 
         window.executeCmd($$('input').value).then((val) => {
@@ -142,6 +141,44 @@ const pages = {
         <input placeholder="user@creepy>" onkeypress="cmd()" type="text" />
       </div>
     `
+  },
+  tasks: () => {
+    zGET({ url: '/tasks.json' }).then((tasks) => {
+      tasks = JSON.parse(tasks).sort()
+
+      for (const taskid of tasks) {
+        zGET({ url: '/tasks/' + taskid + '.json' }).then((taskinfo) => {
+          taskinfo = JSON.parse(taskinfo)
+
+          var languageIcon = ''
+          var lang = ''
+
+          if (taskinfo.language === 'python') { languageIcon = '<i class="fab fa-python"></i>'; lang = 'Python' }
+          if (taskinfo.language === 'javascript') { languageIcon = '<i class="fab fa-js"></i>'; lang = 'JavaScript' }
+
+          $$('div#tasklist.tasklist').innerHTML += `
+            <div class="task" data-task="${taskinfo.id}">
+              <h3 class="href" onclick="session.choosedTask='${taskinfo.id}';requestPage('ide', 'IDE')">${taskinfo.name}</h3>
+              <span class="coding-langage">${languageIcon} ${lang}</span>
+            </div>
+          `
+        })
+      }
+    })
+
+    return `
+      <h1>Tasks</h1>
+      <div class="tasklist" id="tasklist"></div>
+    `
+  },
+  ide: () => {
+    if (typeof session.choosedTask !== 'string') {
+      return requestPage('tasks', 'Tasks') || pages.tasks()
+    } else {
+      return `
+        ${session.choosedTask}
+      `
+    }
   }
 }
 

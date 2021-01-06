@@ -2,7 +2,7 @@ function parseCkis (ckis) {
   const p = {}
   const ck = ckis.split(';')
   for (const c of ck) {
-    p[c.split('=')[0]] = c.split('=')[1]
+    p[decodeURIComponent(c.split('=')[0])] = decodeURIComponent(c.split('=')[1])
   }
 
   return p

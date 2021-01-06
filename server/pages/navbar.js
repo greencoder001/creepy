@@ -13,5 +13,10 @@ module.exports = [
     name: 'Tasks',
     icon: '<i class="fas fa-clipboard-check"></i>',
     page: 'tasks'
+  },
+  {
+    name: 'IDE',
+    icon: '<i class="fas fa-code"></i>',
+    page: 'ide'
   }
 ]

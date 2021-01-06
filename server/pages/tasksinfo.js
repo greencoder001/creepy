@@ -8,7 +8,7 @@ function parseCkis (ckis) {
   return p
 }
 
-const { exec } = require('child_process')
+const fs = require('fs')
 
 module.exports = (req, conf, end, url) => {
   // Login Check
@@ -20,20 +20,7 @@ module.exports = (req, conf, end, url) => {
       // Not logged in
       return '{"error":true,"msg":"You aren\'t logged in!"}'
     }
-
-    exec('cd ' + require('os').userInfo().homedir + ' && ' + decodeURIComponent(url.substr(6)), (err, out, e) => {
-      let res = ''
-      res += out
-
-      if (e) {
-        res += '\n\n' + e
-      }
-
-      if (err) {
-        res += '\n\n' + err
-      }
-
-      return end(res)
-    })
   }
+
+  end(fs.readFileSync('../tasks/tasks.json').toString('utf-8'))
 }

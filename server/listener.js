@@ -32,8 +32,18 @@ module.exports = (isHttps) => {
         res.end(val)
       })
     } else if (rl.startsWith('/exec/')) {
-      res.writeHead(200, { 'Content-Type': 'application/json' })
+      res.writeHead(200, { 'Content-Type': 'text/plain' })
       require('./pages/exec.js')(req, require('./conf/config.js'), (val) => {
+        res.end(val)
+      }, rl)
+    } else if (rl.startsWith('/tasks/') && rl.endsWith('.json')) {
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      require('./pages/taskinfo.js')(req, require('./conf/config.js'), (val) => {
+        res.end(val)
+      }, rl)
+    } else if (rl === '/tasks.json') {
+      res.writeHead(200, { 'Content-Type': 'application/json' })
+      require('./pages/tasksinfo.js')(req, require('./conf/config.js'), (val) => {
         res.end(val)
       }, rl)
     }
