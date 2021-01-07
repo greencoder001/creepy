@@ -183,12 +183,24 @@ const pages = {
 
         const currentFile = session.tasks[session.choosedTask].currentFile
 
+        window.deleteFile = (fn) => {
+          const tsk = session.choosedTask
+          zGET({ url: '/deletefile/' + encodeURIComponent(tsk) + '/' + encodeURIComponent(fn) }).then(() => {
+            zGET({ url: '/tasks/' + encodeURIComponent(tsk) + '.json' }).then((tski) => {
+              console.log(tski)
+              session.files = JSON.parse(tski).files
+
+              window.openFile(tsk, session.files[0])
+            })
+          })
+        }
+
         window.openFile = (task, fname) => {
           session.tasks[session.choosedTask].currentFile = fname
           $$('.files ul').innerHTML = ''
           for (const filename of session.files) {
             $$('.files ul').innerHTML += `
-              <li onclick="session.tasks[session.choosedTask].currentFile='${filename}';openFile(session.choosedTask,'${filename}')" class="${fname === filename ? 'active' : ''}">${(() => {
+              <li oncontextmenu="event.preventDefault(),deleteFile('${filename}')" onclick="session.tasks[session.choosedTask].currentFile='${filename}';openFile(session.choosedTask,'${filename}')" class="${fname === filename ? 'active' : ''}">${(() => {
                 if (filename.endsWith('.py') || filename.endsWith('.pyw')) {
                   return '<i class="fab fa-python"></i>'
                 } else if (filename.endsWith('.js')) {
@@ -224,7 +236,7 @@ const pages = {
           session.files = taskinfo.files
           $$('.files ul').innerHTML = ''
           $$('.files ul').innerHTML += `
-            <li onclick="session.tasks[session.choosedTask].currentFile='${filename}';openFile(session.choosedTask,'${filename}')" class="${currentFile === filename ? 'active' : ''}">${(() => {
+            <li oncontextmenu="event.preventDefault(),deleteFile('${filename}')" onclick="session.tasks[session.choosedTask].currentFile='${filename}';openFile(session.choosedTask,'${filename}')" class="${currentFile === filename ? 'active' : ''}">${(() => {
               if (filename.endsWith('.py') || filename.endsWith('.pyw')) {
                 return '<i class="fab fa-python"></i>'
               } else if (filename.endsWith('.js')) {
@@ -317,9 +329,23 @@ const pages = {
         editor.setShowPrintMargin(false)
         editor.setBehavioursEnabled(false)
       }, 200)
+
+      window.createFile = (fn, tsk) => {
+        if (fn !== null && fn !== '') {
+          zGET({ url: '/setfile/' + encodeURIComponent(tsk) + '/' + encodeURIComponent(fn) + '/' }).then(() => {
+            zGET({ url: '/tasks/' + encodeURIComponent(tsk) + '.json' }).then((tski) => {
+              console.log('Create File ' + fn + ' at ' + tsk)
+              session.files = JSON.parse(tski).files
+              window.openFile(tsk, fn)
+            })
+          })
+        }
+      }
+
       return `
         <div class="files">
           <ul></ul>
+          <button class="createFile" onclick="createFile(prompt('Enter a filename:', ''), session.choosedTask)">+</button>
         </div>
         <div class="code" id="editor"></div>
       `

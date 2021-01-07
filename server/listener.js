@@ -56,6 +56,11 @@ module.exports = (isHttps) => {
       require('./pages/setFile.js')(req, require('./conf/config.js'), (val) => {
         res.end(val)
       }, rl.substr(9))
+    } else if (rl.startsWith('/deletefile/')) {
+      res.writeHead(200, { 'Content-Type': 'text/plain' })
+      require('./pages/deleteFile.js')(req, require('./conf/config.js'), (val) => {
+        res.end(val)
+      }, rl.substr(12))
     }
   }
 }

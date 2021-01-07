@@ -21,12 +21,11 @@ module.exports = (req, conf, end, url) => {
       return '{"error":true,"msg":"You aren\'t logged in!"}'
     }
     try {
-      if (!JSON.parse(fs.readFileSync('../tasks/' + decodeURIComponent(url.split('/')[0]) + '.json').toString('utf-8')).files.includes(decodeURIComponent(url.split('/')[1]))) {
-        const a = JSON.parse(fs.readFileSync('../tasks/' + decodeURIComponent(url.split('/')[0]) + '.json').toString('utf-8'))
-        a.files.push(decodeURIComponent(url.split('/')[1]))
-        fs.writeFileSync('../tasks/' + decodeURIComponent(url.split('/')[0]) + '.json', JSON.stringify(a))
-      }
-      end(fs.writeFileSync(`../tasks/${decodeURIComponent(url.split('/')[0])}/${decodeURIComponent(url.split('/')[1])}`, decodeURIComponent(url.split('/')[2])))
+      const a = JSON.parse(fs.readFileSync('../tasks/' + decodeURIComponent(url.split('/')[0]) + '.json').toString('utf-8'))
+      a.files = a.files.filter((e) => { return e !== decodeURIComponent(url.split('/')[1]) })
+      fs.writeFileSync('../tasks/' + decodeURIComponent(url.split('/')[0]) + '.json', JSON.stringify(a))
+
+      end(fs.unlinkSync('../tasks/' + decodeURIComponent(url.split('/')[0]) + '/' + decodeURIComponent(url.split('/')[1])))
     } catch {
       end('Creepy Server Error: File Error')
     }
