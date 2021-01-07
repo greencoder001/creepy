@@ -225,6 +225,38 @@ const pages = {
               })()} ${filename}</li>
             `
           }
+
+          editor.getSession().setMode('ace/mode/text')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.js')) editor.getSession().setMode('ace/mode/javascript')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.py') || session.tasks[session.choosedTask].currentFile.endsWith('.pyw')) editor.getSession().setMode('ace/mode/python')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.css')) editor.getSession().setMode('ace/mode/css')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.json')) editor.getSession().setMode('ace/mode/json')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.coffee')) editor.getSession().setMode('ace/mode/coffe')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.rb')) editor.getSession().setMode('ace/mode/ruby')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.bat')) editor.getSession().setMode('ace/mode/batchfile')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.cmd')) editor.getSession().setMode('ace/mode/batchfile')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.php')) editor.getSession().setMode('ace/mode/php')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.inc')) editor.getSession().setMode('ace/mode/php')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.cpp')) editor.getSession().setMode('ace/mode/c_cpp')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.ino')) editor.getSession().setMode('ace/mode/c_cpp')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.cs')) editor.getSession().setMode('ace/mode/csharp')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.sass')) editor.getSession().setMode('ace/mode/sass')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.scss')) editor.getSession().setMode('ace/mode/scss')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.less')) editor.getSession().setMode('ace/mode/less')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.text')) editor.getSession().setMode('ace/mode/markdown')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.md')) editor.getSession().setMode('ace/mode/markdown')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.markdown')) editor.getSession().setMode('ace/mode/markdown')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.sql')) editor.getSession().setMode('ace/mode/sql')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.dart')) editor.getSession().setMode('ace/mode/dart')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.pl')) editor.getSession().setMode('ace/mode/perl')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.pm')) editor.getSession().setMode('ace/mode/perl')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.ts')) editor.getSession().setMode('ace/mode/typescript')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.java')) editor.getSession().setMode('ace/mode/java')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.xml')) editor.getSession().setMode('ace/mode/xml')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.go')) editor.getSession().setMode('ace/mode/golang')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.svg')) editor.getSession().setMode('ace/mode/svg')
+          if (session.tasks[session.choosedTask].currentFile.endsWith('.kt')) editor.getSession().setMode('ace/mode/kotlin')
+
           zGET({ url: '/getfile/' + encodeURIComponent(task) + '/' + encodeURIComponent(fname) }).then((value) => {
             session.lastChange = value
             editor.setValue(value)
@@ -262,10 +294,12 @@ const pages = {
           `
         }
 
-        window.openFile(taskinfo.id, currentFile)
-
         const editor = ace.edit('editor')
         editor.setTheme('ace/theme/monokai')
+
+        window.openFile(taskinfo.id, currentFile)
+
+        editor.getSession().setMode('ace/mode/text')
         if (session.tasks[session.choosedTask].currentFile.endsWith('.js')) editor.getSession().setMode('ace/mode/javascript')
         if (session.tasks[session.choosedTask].currentFile.endsWith('.py') || session.tasks[session.choosedTask].currentFile.endsWith('.pyw')) editor.getSession().setMode('ace/mode/python')
         if (session.tasks[session.choosedTask].currentFile.endsWith('.css')) editor.getSession().setMode('ace/mode/css')
