@@ -353,8 +353,8 @@ const pages = {
 
         editor.setOptions({
           fontSize: '12pt',
-          showLineNumbers: false,
-          showGutter: false,
+          showLineNumbers: true,
+          showGutter: true,
           vScrollBarAlwaysVisible: true,
           enableBasicAutocompletion: true,
           enableLiveAutocompletion: true
