@@ -278,6 +278,11 @@ const pages = {
         if (session.tasks[session.choosedTask].currentFile.endsWith('.pl')) editor.getSession().setMode('ace/mode/perl')
         if (session.tasks[session.choosedTask].currentFile.endsWith('.pm')) editor.getSession().setMode('ace/mode/perl')
         if (session.tasks[session.choosedTask].currentFile.endsWith('.ts')) editor.getSession().setMode('ace/mode/typescript')
+        if (session.tasks[session.choosedTask].currentFile.endsWith('.java')) editor.getSession().setMode('ace/mode/java')
+        if (session.tasks[session.choosedTask].currentFile.endsWith('.xml')) editor.getSession().setMode('ace/mode/xml')
+        if (session.tasks[session.choosedTask].currentFile.endsWith('.go')) editor.getSession().setMode('ace/mode/golang')
+        if (session.tasks[session.choosedTask].currentFile.endsWith('.svg')) editor.getSession().setMode('ace/mode/svg')
+        if (session.tasks[session.choosedTask].currentFile.endsWith('.kt')) editor.getSession().setMode('ace/mode/kotlin')
         editor.setValue('')
 
         window.setFile = (task, fname, val) => {
