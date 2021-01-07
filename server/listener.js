@@ -8,7 +8,6 @@ module.exports = (isHttps) => {
     const rl = u.pathname
 
     if (!(require('./conf/config.js').useHTTP) && !isHttps) {
-      console.log('https://' + req.headers.host + req.url)
       res.writeHead(302, { Location: 'https://' + req.headers.host + req.url })
       res.end()
     } else {
