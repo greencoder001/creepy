@@ -5,6 +5,7 @@ $second: #1f3446
 $third: #fff
 $fourth: #b5b5b5
 $fifth: #1b4262
+$sixth: #105288
 
 $good: #13e467
 $ok: #d7fa73
@@ -202,3 +203,23 @@ button, .btn
 ::-webkit-scrollbar-thumb
     border-radius: 10px
     background: $main
+
+.settingsspan
+  margin-right: 3vw
+  float: right
+  font-size: 130%
+  &:hover
+    color: $main
+    cursor: pointer
+
+.popup
+  position: fixed
+  top: 50%
+  left: 50%
+  transform: translate(-50%, -50%)
+  background: $sixth
+  width: 60vw
+  height: 35vh
+  z-index: 10
+  border-radius: 0.5vw
+  padding: 1vw

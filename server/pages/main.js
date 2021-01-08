@@ -159,6 +159,21 @@ const pages = {
     zGET({ url: '/tasks.json' }).then((tasks) => {
       tasks = JSON.parse(tasks).sort()
 
+      window.settings = (tid) => {
+        zGET({ url: '/tasks/' + tid + '.json' }).then((t) => {
+          t = JSON.parse(t)
+
+          $$('body').innerHTML += `
+            <div class="popup">
+              <input class="inp" type="text" placeholder="Taskname" value="${t.name}" />
+
+              <br />
+              <button onclick="this.parentElement.outerHTML=''">OK</button>
+            </div>
+          `
+        })
+      }
+
       for (const taskid of tasks) {
         zGET({ url: '/tasks/' + taskid + '.json' }).then((taskinfo) => {
           taskinfo = JSON.parse(taskinfo)
@@ -173,6 +188,7 @@ const pages = {
             <div class="task" data-task="${taskinfo.id}">
               <h3 class="href" onclick="session.choosedTask='${taskinfo.id}';requestPage('ide', 'IDE')">${taskinfo.name}</h3>
               <span class="coding-langage">${languageIcon} ${lang}</span>
+              <span class="settingsspan" onclick="settings('${taskinfo.id}')"><i class="fas fa-cog"></i></span>
             </div>
           `
         })
