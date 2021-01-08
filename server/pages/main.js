@@ -4,6 +4,14 @@ var cp = 'dash'
 
 const pages = {
   dash: () => {
+    window.executeCmd = (cmd) => {
+      if (cmd === 'clear' || cmd === 'cls') {
+        try { $$('#shell-out').innerText = '' } catch {}
+        return { then: () => {} }
+      }
+      return zGET({ url: '/exec/' + encodeURIComponent(cmd) })
+    }
+
     const parseTime = (seconds) => {
       let out = ''
 
@@ -97,6 +105,11 @@ const pages = {
                 </div>
               </div>
             </div>
+
+            <div style="margin-top:2vh">
+              <button onclick="executeCmd('${info.os === 'Windows' ? 'shutdown -s -t 0' : 'shutdown now'}')">Shutdown</button>
+              <button onclick="executeCmd('${info.os === 'Windows' ? 'shutdown -r -t 0' : 'shutdown -r now'}')">Reboot</button>
+            </div>
           `
         })
       }
@@ -112,7 +125,7 @@ const pages = {
   shell: () => {
     window.executeCmd = (cmd) => {
       if (cmd === 'clear' || cmd === 'cls') {
-        $$('#shell-out').innerText = ''
+        try { $$('#shell-out').innerText = '' } catch {}
         return { then: () => {} }
       }
       return zGET({ url: '/exec/' + encodeURIComponent(cmd) })
